@@ -1,13 +1,15 @@
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points');
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/move_features');
-jest.mock('../../lib/utils/create_supplementary_points_circle');
+import { jest } from '@jest/globals';
+import createSupplementaryPoints from '@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points.js';
+import moveFeatures from '@mapbox/mapbox-gl-draw/src/lib/move_features.js';
+import Constants from '@mapbox/mapbox-gl-draw/src/constants.js';
+import createSupplementaryPointsForCircle from '../../lib/utils/create_supplementary_points_circle.js';
+import SimpleSelectModeImport from '../../lib/modes/SimpleSelectModeOverride.js';
 
-const createSupplementaryPoints = require('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points');
-const moveFeatures = require('@mapbox/mapbox-gl-draw/src/lib/move_features');
-const Constants = require('@mapbox/mapbox-gl-draw/src/constants');
-const createSupplementaryPointsForCircle = require('../../lib/utils/create_supplementary_points_circle');
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points.js');
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/move_features.js');
+jest.mock('../../lib/utils/create_supplementary_points_circle.js');
 
-let SimpleSelectMode = require('../../lib/modes/SimpleSelectModeOverride');
+let SimpleSelectMode = SimpleSelectModeImport;
 
 describe('SimpleSelectMode tests', () => {
   let mockState = {};

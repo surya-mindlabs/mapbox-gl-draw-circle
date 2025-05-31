@@ -1,13 +1,21 @@
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom', () => ({
-  enable: jest.fn(),
-  disable: jest.fn()
+import { jest } from '@jest/globals';
+import CircleModeImport from '../../lib/modes/CircleMode.js';
+import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom.js';
+import Constants from '@mapbox/mapbox-gl-draw/src/constants.js';
+import circle from '@turf/circle';
+
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom.js', () => ({
+  default: {
+    enable: jest.fn(),
+    disable: jest.fn()
+  }
 }));
 
 jest.mock('@turf/circle', () => ({
   default: jest.fn()
 }));
 
-let CircleMode = require('../../lib/modes/CircleMode');
+let CircleMode;
 const mockFeature = {
   "type": "Feature",
   "properties": {},
@@ -16,14 +24,11 @@ const mockFeature = {
     "coordinates": []
   }
 };
-const doubleClickZoom = require('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom');
-const Constants = require('@mapbox/mapbox-gl-draw/src/constants');
-const circle = require('@turf/circle');
 
 describe('CircleMode tests', () => {
   beforeEach(() => {
     CircleMode = {
-      ...CircleMode,
+      ...CircleModeImport,
       addFeature: jest.fn(),
       newFeature: jest.fn(),
       clearSelectedFeatures: jest.fn(),
@@ -94,7 +99,7 @@ describe('CircleMode tests', () => {
   });
 
   it('should generate a circle feature and change mode to simple select when clickAnywhere is invoked', () => {
-    circle.default.mockReturnValue({
+    circle.mockReturnValue({
       geometry: {
         coordinates: []
       }
@@ -114,7 +119,7 @@ describe('CircleMode tests', () => {
 
     CircleMode.clickAnywhere(mockState, mockEvent);
     expect(mockState.currentVertexPosition).toBe(1);
-    expect(circle.default).toHaveBeenCalledWith([0, 0], 1);
+    expect(circle).toHaveBeenCalledWith([0, 0], 1);
     expect(CircleMode.changeMode).toHaveBeenCalledWith(
       Constants.modes.SIMPLE_SELECT, { featureIds: [mockState.polygon.id] }
     );

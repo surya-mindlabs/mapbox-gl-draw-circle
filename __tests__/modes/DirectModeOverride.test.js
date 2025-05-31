@@ -1,20 +1,21 @@
+import { jest } from '@jest/globals';
+import createSupplementaryPoints from '@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points.js';
+import moveFeatures from '@mapbox/mapbox-gl-draw/src/lib/move_features.js';
+import Constants from '@mapbox/mapbox-gl-draw/src/constants.js';
+import distance from '@turf/distance';
+import circle from '@turf/circle';
+import createSupplementaryPointsForCircle from '../../lib/utils/create_supplementary_points_circle.js';
+import DirectModeImport from '../../lib/modes/DirectModeOverride.js';
 
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points');
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/move_features');
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/constrain_feature_movement');
-jest.mock('@turf/distance', () => ({ default: jest.fn() }));
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points.js');
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/move_features.js');
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/constrain_feature_movement.js');
+jest.mock('@turf/distance');
 jest.mock('@turf/helpers');
-jest.mock('@turf/circle', () => ({ default: jest.fn() }));
-jest.mock('../../lib/utils/create_supplementary_points_circle');
+jest.mock('@turf/circle');
+jest.mock('../../lib/utils/create_supplementary_points_circle.js');
 
-const createSupplementaryPoints = require('@mapbox/mapbox-gl-draw/src/lib/create_supplementary_points');
-const moveFeatures = require('@mapbox/mapbox-gl-draw/src/lib/move_features');
-const Constants = require('@mapbox/mapbox-gl-draw/src/constants');
-const distance = require('@turf/distance').default;
-const circle = require('@turf/circle').default;
-const createSupplementaryPointsForCircle = require('../../lib/utils/create_supplementary_points_circle');
-
-let DirectMode = require('../../lib/modes/DirectModeOverride');
+let DirectMode = DirectModeImport;
 
 describe('DirectMode tests', () => {
   let mockState = {};

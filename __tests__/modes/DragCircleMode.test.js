@@ -1,22 +1,29 @@
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom', () => ({
-  enable: jest.fn(),
-  disable: jest.fn()
+import { jest } from '@jest/globals';
+import doubleClickZoom from '@mapbox/mapbox-gl-draw/src/lib/double_click_zoom.js';
+import Constants from '@mapbox/mapbox-gl-draw/src/constants.js';
+import circle from '@turf/circle';
+import dragPan from '../../lib/utils/drag_pan.js';
+import distance from '@turf/distance';
+import DragCircleModeImport from '../../lib/modes/DragCircleMode.js';
+
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom.js', () => ({
+  default: {
+    enable: jest.fn(),
+    disable: jest.fn()
+  }
 }));
 
-jest.mock('@turf/circle', () => ({
-  default: jest.fn()
+jest.mock('@turf/circle');
+jest.mock('@turf/distance');
+
+jest.mock('../../lib/utils/drag_pan.js', () => ({
+  default: {
+    enable: jest.fn(),
+    disable: jest.fn()
+  }
 }));
 
-jest.mock('@turf/distance', () => ({
-  default: jest.fn()
-}));
-
-jest.mock('../../lib/utils/drag_pan', () => ({
-  enable: jest.fn(),
-  disable: jest.fn()
-}));
-
-let DragCircleMode = require('../../lib/modes/DragCircleMode');
+let DragCircleMode = DragCircleModeImport;
 const mockFeature = {
   "type": "Feature",
   "properties": {},
@@ -25,11 +32,6 @@ const mockFeature = {
     "coordinates": []
   }
 };
-const doubleClickZoom = require('@mapbox/mapbox-gl-draw/src/lib/double_click_zoom');
-const Constants = require('@mapbox/mapbox-gl-draw/src/constants');
-const circle = require('@turf/circle');
-const dragPan = require('../../lib/utils/drag_pan');
-const distance = require('@turf/distance');
 
 describe('DragCircleMode', function () {
 
@@ -206,8 +208,8 @@ describe('DragCircleMode', function () {
   });
 
   it('should adjust the geometry when onDrag is fired', function () {
-    distance.default.mockReturnValue(2);
-    circle.default.mockReturnValue({
+    distance.mockReturnValue(2);
+    circle.mockReturnValue({
       geometry: {
         coordinates: [12, 2]
       }
@@ -227,8 +229,8 @@ describe('DragCircleMode', function () {
   });
 
   it('should adjust the geometry when onMouseMove is fired', function () {
-    distance.default.mockReturnValue(2);
-    circle.default.mockReturnValue({
+    distance.mockReturnValue(2);
+    circle.mockReturnValue({
       geometry: {
         coordinates: [12, 2]
       }

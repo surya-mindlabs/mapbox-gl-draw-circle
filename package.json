@@ -2,10 +2,14 @@
   "name": "mapbox-gl-draw-circle",
   "version": "1.1.2",
   "description": "A module to draw a circle using mapbox-gl-draw",
-  "main": "index",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
   "scripts": {
-    "test": "jest --all",
-    "coverage": "jest --all --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --all",
+    "coverage": "NODE_OPTIONS=--experimental-vm-modules jest --all --coverage"
   },
   "keywords": [
     "mapbox",
@@ -25,7 +29,8 @@
     "@turf/length": "^6.0.2"
   },
   "devDependencies": {
-    "jest": "^24.5.0"
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0"
   },
   "repository": {
     "type": "git",

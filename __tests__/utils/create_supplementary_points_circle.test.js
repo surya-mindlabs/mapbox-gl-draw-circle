@@ -1,8 +1,10 @@
-jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_vertex');
+import { jest } from '@jest/globals';
+import createSupplementaryPointsForCircle from '../../lib/utils/create_supplementary_points_circle.js';
+import createVertex from '@mapbox/mapbox-gl-draw/src/lib/create_vertex.js';
+
+jest.mock('@mapbox/mapbox-gl-draw/src/lib/create_vertex.js');
 
 describe('CreateSupplementaryPointsForCircle tests', () => {
-  const createSupplementaryPointsForCircle = require('../../lib/utils/create_supplementary_points_circle');
-  const createVertex = require('@mapbox/mapbox-gl-draw/src/lib/create_vertex');
 
   it('should generate four supplementary points when the feature is a circle', () => {
     const mockGeoJSON = {
